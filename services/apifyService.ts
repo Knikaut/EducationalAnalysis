@@ -7,15 +7,16 @@
 const APIFY_API_URL = 'https://api.apify.com/v2';
 // Using the more robust scraper that fetches posts/media
 const ACTOR_ID = 'apify~instagram-scraper'; 
-// Добавляем (import.meta as any), чтобы отключить проверку
-const APIFY_TOKEN = (import.meta as any).env.VITE_APIFY_TOKEN;
 
 /**
  * Runs the Apify scraper for a specific Instagram handle.
  */
 export const runApifyScraper = async (handle: string): Promise<string> => {
+  // Move token access inside the function to avoid top-level crash if env is not ready
+  const APIFY_TOKEN = (import.meta as any).env.VITE_APIFY_TOKEN;
+
   if (!APIFY_TOKEN) {
-    throw new Error("APIFY_API_KEY is missing. Please checks your settings.");
+    throw new Error("APIFY_API_KEY is missing. Please check your settings.");
   }
 
   // 1. Start the Actor Run
